@@ -55,14 +55,14 @@ public class BankAccount implements IBankAccount {
 	 */
 	
 	@Override
-	public void withdraw(float amount) throws Exception {
+	public void withdraw(float amount) throws OperationFailureException {
 		/* 
 		 * check if balance is insufficient to perform withdraw;
 		 * throw exception in this case.
 		 */
 		if(this.balance-amount<0)
 		{	
-			throw new Exception("Could not perform transaction due to insufficient balace");
+			throw new OperationFailureException("Could not perform transaction due to zero balace");
 		}
 		else
 		{
@@ -71,26 +71,40 @@ public class BankAccount implements IBankAccount {
 	}
 
 	@Override
-	public void transferFunds(String payeeAccountNumber, float amount) throws Exception {
+	public void transferFunds(IBankAccount payeeAccount,float amount) throws OperationFailureException {
 		/* 
 		 * check if balance is insufficient to perform transaction;
 		 * throw exception in this case.
 		 */
+		
+		float checkedBalance = this.balance; //checkpoint for balance in order to rollback to this balance in case of transaction failure.
 		if(this.balance-amount<0)
 		{	
-			throw new Exception("Could not perform transaction due to insufficient balace");
+			throw new OperationFailureException("Could not perform transaction due to zero balace");
 		}
 		else
 		{
-			/*
-			 * check if payee's account exist or not 
-			 */
+			// check if payee's account is null 
 			
-			//add code to search for payee's account here
+			if(payeeAccount==null)
+				throw new OperationFailureException("null payee account");
 			
-			//add code to perform withdraw from this account
+			try
+			{
+				//withdraw from this account
+				
+				this.withdraw(amount);
 			
-			//add code to perform deposit to payee's account 			
+				//deposit to payee's account
+				payeeAccount.deposit(amount);
+			}
+			catch(Exception exception)
+			{
+				//rollback to balance before failure.
+				this.balance = checkedBalance;
+				throw new OperationFailureException(exception);
+			}
+			
 		}
 	}
 
@@ -98,6 +112,41 @@ public class BankAccount implements IBankAccount {
 	public float getBalance() {
 		return this.balance;
 	}
+
+
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((accountNumber == null) ? 0 : accountNumber.hashCode());
+		return result;
+	}
+
+
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) //check if both references holding same objects
+			return true;
+		
+		if (obj == null) //check if other object is null. To avoid NullPointerException
+			return false;
+		
+		if (this.getClass() != obj.getClass()) //check class compatibility of both the objects.
+			return false;
+		
+		BankAccount other = (BankAccount) obj;
+		if (accountNumber == null) //check if accountNumber of this object is null
+		{
+			if (other.accountNumber != null)//check if accountNumber of other object is null
+				return false;
+		} else if (!accountNumber.equals(other.accountNumber)) //check if both objects have same account number
+			return false;
+		return true;
+	}
+	
+	
 
 	
 

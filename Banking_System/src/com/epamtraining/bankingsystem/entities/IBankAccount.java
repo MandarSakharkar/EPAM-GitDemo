@@ -8,7 +8,7 @@ package com.epamtraining.bankingsystem.entities;
 public interface IBankAccount {
 
 	void deposit(float amount);		//deposits amount to this bank account.	
-	void withdraw(float amount) throws Exception;		//withdraws amount from this bank account and throws exception if transaction unsuccessful.
-	void transferFunds(String payeeAccountNumber, float amount) throws Exception; //transfer funds from this bank account to payee's bank account and throws exception if transaction unsuccessful.
+	void withdraw(float amount) throws OperationFailureException;		//withdraws amount from this bank account and throws exception if transaction unsuccessful.
+	void transferFunds(IBankAccount payeeAccount,float amount) throws OperationFailureException; //transfer funds from this bank account to payee's bank account and throws exception if transaction unsuccessful.
 	float getBalance(); 	//returns account balance of this bank account
 }
