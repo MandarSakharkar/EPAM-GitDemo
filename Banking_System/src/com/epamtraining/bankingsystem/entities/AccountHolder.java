@@ -8,10 +8,10 @@ public class AccountHolder {
 	private long uidNumber;		//Uid(Adhar) Number of account holder
 	private Date dateOfBirth;	//Date of birth of account holder
 	private Address address;	//address of account holder to be set using constructor of address object.
-	
+
 	public AccountHolder() {
 	}
-	
+
 	public AccountHolder(String fullName, long uidNumber, Date dateOfBirth, Address address) {
 		this.fullName = fullName;
 		this.uidNumber = uidNumber;
@@ -50,7 +50,7 @@ public class AccountHolder {
 	public void setAddress(Address address) {
 		this.address = address;
 	}
-	
-	
+
+
 
 }

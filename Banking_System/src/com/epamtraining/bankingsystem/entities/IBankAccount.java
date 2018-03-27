@@ -1,5 +1,6 @@
 package com.epamtraining.bankingsystem.entities;
 
+import com.epamtraining.bankingsystem.exceptions.OperationFailureException;
 
 /*
  * IBankAccount - an interface to declare the basic functionalities,

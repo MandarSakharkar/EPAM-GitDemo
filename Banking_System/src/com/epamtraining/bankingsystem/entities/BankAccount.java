@@ -1,16 +1,18 @@
 package com.epamtraining.bankingsystem.entities;
 
+import com.epamtraining.bankingsystem.exceptions.OperationFailureException;
+
 public class BankAccount implements IBankAccount {
 
-	
+
 	private String accountNumber;
 	private float balance;
 	private AccountHolder accountHolder;
-	
+
 	public BankAccount() {
 	}
-	
-	
+
+
 
 	public BankAccount(String accountNumber, float balance, AccountHolder accountHolder) {
 		super();
@@ -19,7 +21,7 @@ public class BankAccount implements IBankAccount {
 		this.accountHolder = accountHolder;
 	}
 
-	
+
 
 	public String getAccountNumber() {
 		return accountNumber;
@@ -43,7 +45,7 @@ public class BankAccount implements IBankAccount {
 
 
 
-	
+
 	// perform deposit operation.
 	@Override
 	public void deposit(float amount) {
@@ -53,7 +55,7 @@ public class BankAccount implements IBankAccount {
 	/*
 	 * perform withdraw operation if sufficient balance is there,otherwise throw exception.
 	 */
-	
+
 	@Override
 	public void withdraw(float amount) throws OperationFailureException {
 		/* 
@@ -76,7 +78,7 @@ public class BankAccount implements IBankAccount {
 		 * check if balance is insufficient to perform transaction;
 		 * throw exception in this case.
 		 */
-		
+
 		float checkedBalance = this.balance; //checkpoint for balance in order to rollback to this balance in case of transaction failure.
 		if(this.balance-amount<0)
 		{	
@@ -85,16 +87,16 @@ public class BankAccount implements IBankAccount {
 		else
 		{
 			// check if payee's account is null 
-			
+
 			if(payeeAccount==null)
 				throw new OperationFailureException("null payee account");
-			
+
 			try
 			{
 				//withdraw from this account
-				
+
 				this.withdraw(amount);
-			
+
 				//deposit to payee's account
 				payeeAccount.deposit(amount);
 			}
@@ -104,7 +106,7 @@ public class BankAccount implements IBankAccount {
 				this.balance = checkedBalance;
 				throw new OperationFailureException(exception);
 			}
-			
+
 		}
 	}
 
@@ -129,13 +131,13 @@ public class BankAccount implements IBankAccount {
 	public boolean equals(Object obj) {
 		if (this == obj) //check if both references holding same objects
 			return true;
-		
+
 		if (obj == null) //check if other object is null. To avoid NullPointerException
 			return false;
-		
+
 		if (this.getClass() != obj.getClass()) //check class compatibility of both the objects.
 			return false;
-		
+
 		BankAccount other = (BankAccount) obj;
 		if (accountNumber == null) //check if accountNumber of this object is null
 		{
@@ -145,9 +147,9 @@ public class BankAccount implements IBankAccount {
 			return false;
 		return true;
 	}
-	
-	
 
-	
+
+
+
 
 }

@@ -6,10 +6,10 @@ public class Address {
 	private String city;	//city in which account holder lives.
 	private String state;	//state in which account holder lives.
 	private int zipCode; 	// six digit zip-code of account holder.
-	
+
 	public Address() {
 	}
-	
+
 	public Address(String street, String city, String state, int zipCode) {
 		super();
 		this.street = street;
@@ -49,6 +49,6 @@ public class Address {
 	public void setZipCode(int zipCode) {
 		this.zipCode = zipCode;
 	}
-	
-	
+
+
 }

@@ -1,5 +1,7 @@
 package com.epamtraining.bankingsystem.entities;
 
+import com.epamtraining.bankingsystem.exceptions.OperationFailureException;
+
 public class SavingAccount extends BankAccount {
 	
 	//static fields
@@ -56,7 +58,7 @@ public class SavingAccount extends BankAccount {
 		else
 		{
 			withdraw(penaltyAmount+penaltyPending);
-			penaltyPending = 0;     //
+			penaltyPending = 0;
 		}
 		
 	}

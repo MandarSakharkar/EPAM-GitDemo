@@ -11,21 +11,21 @@ public class BankCollectionImplementation implements IBank{
 
 	String bankName;
 	String bankIFSCCode;
-	
+
 	Set<IBankAccount> bankAccountSet;
-	
+
 	public BankCollectionImplementation() {
 		this("","",new HashSet<>());
 	}
-	
+
 	public BankCollectionImplementation(String bankName, String bankIFSCCode, Set<IBankAccount> bankAccountSet) {
 		super();
 		this.bankName = bankName;
 		this.bankIFSCCode = bankIFSCCode;
 		this.bankAccountSet = bankAccountSet;
 	}
-	
-	
+
+
 	/*
 	 * Add the newly create account object to the accountSet collection. 
 	 * method will return false if account with same account number already exist in bankAccountSet. 
@@ -34,21 +34,21 @@ public class BankCollectionImplementation implements IBank{
 	public boolean addAccount(IBankAccount bankAccount) {
 		return bankAccountSet.add(bankAccount);
 	}
-	
+
 	/* 
 	 * Search bank account with account number;
 	 * Returns null if account with given account number is not in bankAccountSet.
 	 */
 	@Override
 	public IBankAccount searchAccount(String accountNumber) {
-		
+
 		/*
 		 * create instance of class at higher level of abstraction, which is class BankAccount here;
 		 * to make search using account number easy. 
 		 * Refer the implementation of equals method of BankAccount.
 		 */
 		BankAccount bankAccount = new BankAccount(accountNumber, 0.0f, null);
-		
+
 		/*
 		 * iterate through bankAccountSet and check if account with provided account number is found or not.
 		 */
@@ -58,7 +58,7 @@ public class BankCollectionImplementation implements IBank{
 		}
 		return null;
 	}
-	
+
 	/* 
 	 * Remove the given bankAccount from the bankAccountSet.
 	 * Requires bankAccount object as an argument;
@@ -73,7 +73,7 @@ public class BankCollectionImplementation implements IBank{
 	}
 
 	//getters and setters
-	
+
 	public String getBankName() {
 		return bankName;
 	}
@@ -97,7 +97,7 @@ public class BankCollectionImplementation implements IBank{
 	public void setBankAccountSet(Set<IBankAccount> bankAccountSet) {
 		this.bankAccountSet = bankAccountSet;
 	}
-	
-	
-	
+
+
+
 }

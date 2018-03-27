@@ -1,4 +1,4 @@
-package com.epamtraining.bankingsystem.entities;
+package com.epamtraining.bankingsystem.exceptions;
 
 
 /*
