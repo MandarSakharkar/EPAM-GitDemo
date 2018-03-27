@@ -64,7 +64,7 @@ public class BankAccount implements IBankAccount {
 		 */
 		if(this.balance-amount<0)
 		{	
-			throw new OperationFailureException("Could not perform transaction due to zero balace");
+			throw new OperationFailureException("Could not perform transaction due to zero balance");
 		}
 		else
 		{
@@ -82,7 +82,7 @@ public class BankAccount implements IBankAccount {
 		float checkedBalance = this.balance; //checkpoint for balance in order to rollback to this balance in case of transaction failure.
 		if(this.balance-amount<0)
 		{	
-			throw new OperationFailureException("Could not perform transaction due to zero balace");
+			throw new OperationFailureException("Could not perform transaction due to zero balance");
 		}
 		else
 		{
@@ -102,7 +102,7 @@ public class BankAccount implements IBankAccount {
 			}
 			catch(Exception exception)
 			{
-				//rollback to balance before failure.
+				//rollback to checkpoint balance
 				this.balance = checkedBalance;
 				throw new OperationFailureException(exception);
 			}
