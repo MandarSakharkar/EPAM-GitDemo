@@ -13,11 +13,15 @@ public class BankCollectionImplementation implements IBank{
 	String bankIFSCCode;
 
 	Set<IBankAccount> bankAccountSet;
+	
+	static long accountCount=0;
 
 	public BankCollectionImplementation() {
 		this("","",new HashSet<>());
 	}
 
+	
+	
 	public BankCollectionImplementation(String bankName, String bankIFSCCode, Set<IBankAccount> bankAccountSet) {
 		super();
 		this.bankName = bankName;
@@ -74,6 +78,16 @@ public class BankCollectionImplementation implements IBank{
 
 	//getters and setters
 
+	/* generate the account number 
+	 * keep the implementation synchronized so that, 
+	 * only one calling function can generate account number,
+	 * and resulting number will be unique.
+	 */
+	public synchronized String getGeneratedAccountNumber()
+	{
+		return bankIFSCCode + (++accountCount);		
+	}
+	
 	public String getBankName() {
 		return bankName;
 	}

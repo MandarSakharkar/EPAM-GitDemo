@@ -10,6 +10,7 @@ public class BankAccount implements IBankAccount {
 	private AccountHolder accountHolder;
 
 	public BankAccount() {
+		this("",0.0f,null);
 	}
 
 
