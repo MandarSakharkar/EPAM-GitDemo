@@ -18,14 +18,23 @@ public class ConsoleUserInterface {
 
 	final static String BANKNAME = "Citi Bank";
 	final static String BANKIFSC = "12345";
+	final static String ACCOUNTMANAGERUSERNAME = "AM123";
+	final static String ACCOUNTMANAGERPASSWORD = "AMPASS123";
+	final static String TRANSACTIONMANAGERUSERNAME = "TM123";
+	final static String TRANSACTIONMANAGERPASSWORD = "TMPASS123";
+	
+	Scanner scan;
+	public ConsoleUserInterface() {
+		 scan = new Scanner(System.in);
+	}
+	
 	final static Set<IBankAccount> ACCOUNTS = new HashSet<>();
 
 	static IBank bank = new BankCollectionImplementation(BANKNAME, BANKIFSC, ACCOUNTS);
 
-	static AccountHolder createAccountHolderDetails()
+	AccountHolder createAccountHolderDetails()
 	{
-		Scanner scan = new Scanner(System.in);
-
+		
 		System.out.println("Enter account holder's detail as mentioned \n");
 		System.out.println("Full Name : ");
 		String fullName = scan.nextLine();
@@ -38,14 +47,12 @@ public class ConsoleUserInterface {
 		Date dateOfBirth = Date.valueOf(scan.nextLine());
 
 		Address address = createAddressDetails();
-		scan.close();
 		return new AccountHolder(fullName, uidNumber, dateOfBirth, address);
 	}
 
-	static Address createAddressDetails()
+	Address createAddressDetails()
 	{
-		Scanner scan = new Scanner(System.in);
-
+		
 		System.out.println("Enter following address Details: ");
 
 		System.out.println("Street : ");
@@ -60,16 +67,14 @@ public class ConsoleUserInterface {
 		System.out.println("Zip Code : ");
 		int zipCode = scan.nextInt();
 
-		scan.close();
 		return new Address(street, city, state, zipCode);
 	}
 
 	//Administrator functions - begin
 
 	
-	static void openAccount()
+	void openAccount()
 	{
-		Scanner scan = new Scanner(System.in);
 
 
 		System.out.println("Enter account type (saving/current) : ");
@@ -96,13 +101,11 @@ public class ConsoleUserInterface {
 			System.out.println("Account created with account Number :"+bankAccount.getAccountNumber());
 		else
 			System.out.println("Unable to create account/account already exists");
-
 	}
 
-	static void closeAccount()
+	void closeAccount()
 	{
-		Scanner scan = new Scanner(System.in);
-
+		
 		System.out.println("Enter the account number of account to be closed");
 
 		String accountNumber = scan.nextLine();
@@ -124,8 +127,7 @@ public class ConsoleUserInterface {
 			{
 				e.printStackTrace();
 			}
-		}
-		scan.close();	
+		}	
 	}
 
 	//Administrator functions - end 
@@ -133,10 +135,8 @@ public class ConsoleUserInterface {
 	//Transaction Handler functions - begin
 	void doDeposit()
 	{
-		Scanner scanner = new Scanner(System.in);
-
 		System.out.print("Enter the account number : ");
-		IBankAccount bankAccount = bank.searchAccount(scanner.nextLine());
+		IBankAccount bankAccount = bank.searchAccount(scan.nextLine());
 
 		//check whether account exist or not. null value of bank account indicate that account with given account number doesn't exist. 
 		if(bankAccount==null)
@@ -144,17 +144,16 @@ public class ConsoleUserInterface {
 		else
 		{
 			System.out.print("Enter Amount to deposit into account : ");
-			bankAccount.deposit(scanner.nextFloat());
+			bankAccount.deposit(scan.nextFloat());
+			System.out.println("Ammount deposited successfully!\n Current Balance :"+bankAccount.getBalance());
 		}
-		scanner.close();
 	}
 
 	void doWithdraw()
 	{
-		Scanner scanner = new Scanner(System.in);
 
 		System.out.print("Enter the account number : ");
-		IBankAccount bankAccount = bank.searchAccount(scanner.nextLine());
+		IBankAccount bankAccount = bank.searchAccount(scan.nextLine());
 
 		//check whether account exist or not. null value of bank account indicate that account with given account number doesn't exist. 
 		if(bankAccount==null)
@@ -164,22 +163,21 @@ public class ConsoleUserInterface {
 			System.out.print("Enter Amount to withdraw from account : ");
 			try 
 			{
-				bankAccount.withdraw(scanner.nextFloat());
+				bankAccount.withdraw(scan.nextFloat());
+
+				System.out.println("Ammount withdrawn successfully!\n Current Balance :"+bankAccount.getBalance());
 			}
 			catch (OperationFailureException e) 
 			{
 				System.out.println(e.getMessage());
 			}
 		}
-		scanner.close();
 	}
 
 	void doFundTransfer()
-	{
-		Scanner scanner = new Scanner(System.in);
-		
+	{	
 		System.out.print("Enter the account number : ");
-		IBankAccount bankAccount = bank.searchAccount(scanner.nextLine());
+		IBankAccount bankAccount = bank.searchAccount(scan.nextLine());
 
 		//check whether account exist or not. null value of bank account indicate that account with given account number doesn't exist. 
 		if(bankAccount==null)
@@ -188,7 +186,7 @@ public class ConsoleUserInterface {
 		{
 
 			System.out.print("Enter the account number : ");
-			IBankAccount payeeAccount = bank.searchAccount(scanner.nextLine());
+			IBankAccount payeeAccount = bank.searchAccount(scan.nextLine());
 
 			//check whether payee account exist or not. null value of payee account indicate that account with given account number doesn't exist. 
 			if(payeeAccount==null)
@@ -199,7 +197,8 @@ public class ConsoleUserInterface {
 				try 
 				{
 					
-					bankAccount.transferFunds(payeeAccount, scanner.nextFloat());
+					bankAccount.transferFunds(payeeAccount, scan.nextFloat());
+					System.out.println("Ammount transffered successfully!\n Current Balance :"+bankAccount.getBalance());
 				}
 				catch (OperationFailureException e) 
 				{
@@ -208,45 +207,150 @@ public class ConsoleUserInterface {
 			}
 			
 		}
-		
-		scanner.close();
 	}
+	
+	void checkBalance()
+	{	
+		System.out.print("Enter the account number : ");
+		String accountNumber = scan.nextLine();
+		IBankAccount bankAccount = bank.searchAccount(accountNumber);
+
+		//check whether account exist or not. null value of bank account indicate that account with given account number doesn't exist. 
+		if(bankAccount==null)
+			System.out.println("Sorry! Account with given account number not exist.");
+		else
+		{
+			System.out.println(bankAccount); 
+		}
+	}
+	
 	//Transaction Handler functions - end
 
-	//menu function - begin
-	static int getAdministratorMenu()
+	
+	
+	
+	
+	
+	//menu functions - begin
+	int getAccountManagerMenu()
 	{
-		Scanner scan = new Scanner(System.in);
-
-		System.out.println("************Administrator Menu************");		
+		System.out.println("************Account Manager Menu************");		
 		System.out.println("0.logout");
 		System.out.println("1.open new bank account");
 		System.out.println("2.close the bank account");
-		System.out.println("Enter the choice (0 to 2) : ");
+		System.out.println("3.print details of all bank accounts");
+		System.out.println("Enter the choice (0 to 3) : ");
 		int choice = scan.nextInt();
-		scan.close();
+		scan.nextLine();
 		return choice;
 	}
 
-	static int getTransactionHandlerMenu()
+	int getTransactionManagerMenu()
 	{
-		Scanner scan = new Scanner(System.in);
-
-		System.out.println("************Transaction Handler Menu************");			
+		System.out.println("************Transaction Manager Menu************");			
 		System.out.println("0.logout");
 		System.out.println("1.Deposit Amount");
 		System.out.println("2.Withdraw Amount");
 		System.out.println("3.Transfer Amount");
-		System.out.println("Enter the choice (0 to 3) : ");
-		scan.close();
-		return 0;
+		System.out.println("4.Check Balance");
+		System.out.println("Enter the choice (0 to 4) : ");
+		int choice = scan.nextInt();
+		scan.nextLine();
+		return choice;
+	}
+	
+	void printAllAccounts()
+	{
+		for (IBankAccount bankAccount : ACCOUNTS) {
+			System.out.println(bankAccount+", account type : "+bankAccount.getClass().getSimpleName());
+		}
+	}
+	
+	void manageAccounts() //account menu handler
+	{
+		int choice;
+		while( ( choice = getAccountManagerMenu() ) != 0)
+		{
+			switch (choice) {
+			case 1:openAccount();
+				break;
+			case 2:closeAccount();
+				break;
+			case 3:printAllAccounts();
+				break;	
+			default:
+				System.out.println("Wrong choice! Please try again with choice between 0-3.");
+				break;
+			}
+		}
+		getMainMenu(); //back to main menu when user enters 0.
+	}
+	
+	void doTransactions() // transaction menu handler
+	{
+		int choice = 0;
+		while( ( choice = getTransactionManagerMenu() ) != 0)
+		{
+			switch (choice) {
+			case 1:	doDeposit();
+				break;
+			case 2:	doWithdraw();
+				break;
+			case 3:	doFundTransfer();
+				break;
+			case 4:	checkBalance();
+				break;
+			default:
+				System.out.println("Wrong choice! Please try again with choice between 0-4.");
+				break;
+			}			
+		}
+		getMainMenu(); //back to main menu when user enters 0.
+	}
+	
+	
+	
+	int getMainMenu() //to display the main menu.
+	{
+		System.out.println("************Main Menu************");			
+		System.out.println("0.Exit");
+		System.out.println("1.Login");
+		System.out.print("Enter the choice (0 or 1) : ");
+		int choice = scan.nextInt();
+		scan.nextLine();
+		return choice;
 	}
 
+	void doLogin() //bank employee login handler function.
+	{
+		System.out.print("Enter Username : ");
+		String username = scan.nextLine();
+		System.out.print("Enter Password : ");
+		String password = scan.nextLine();
+		
+		if (username.equalsIgnoreCase(ACCOUNTMANAGERUSERNAME) && password.equals(ACCOUNTMANAGERPASSWORD)) {
+			this.manageAccounts();
+		}
+		else if (username.equalsIgnoreCase(TRANSACTIONMANAGERUSERNAME) && password.equals(TRANSACTIONMANAGERPASSWORD)) {
+			this.doTransactions();
+		}	
+		else
+			System.out.println("Wrong credentials.");
+	}
 	//menu function - end
 	public static void main(String[] args) {
+		int choice;
+		ConsoleUserInterface cui = new ConsoleUserInterface();
+		while( (choice = cui.getMainMenu() )!= 0)
+		{
+			switch (choice) {
+			case 1:cui.doLogin();
+				break;
 
-
-
+			default:
+				break;
+			}
+		}
 	}
 
 }

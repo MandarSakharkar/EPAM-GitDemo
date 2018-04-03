@@ -65,7 +65,7 @@ public class BankAccount implements IBankAccount {
 		 */
 		if(this.balance-amount<0)
 		{	
-			throw new OperationFailureException("Could not perform transaction due to zero balance");
+			throw new OperationFailureException("Could not perform transaction due to insufficient balance");
 		}
 		else
 		{
@@ -83,7 +83,7 @@ public class BankAccount implements IBankAccount {
 		float checkedBalance = this.balance; //checkpoint for balance in order to rollback to this balance in case of transaction failure.
 		if(this.balance-amount<0)
 		{	
-			throw new OperationFailureException("Could not perform transaction due to zero balance");
+			throw new OperationFailureException("Could not perform transaction due to insufficient balance");
 		}
 		else
 		{
@@ -136,9 +136,6 @@ public class BankAccount implements IBankAccount {
 		if (obj == null) //check if other object is null. To avoid NullPointerException
 			return false;
 
-		if (this.getClass() != obj.getClass()) //check class compatibility of both the objects.
-			return false;
-
 		BankAccount other = (BankAccount) obj;
 		if (accountNumber == null) //check if accountNumber of this object is null
 		{
@@ -149,6 +146,15 @@ public class BankAccount implements IBankAccount {
 		return true;
 	}
 
+
+
+	@Override
+	public String toString() {
+		return "BankAccount [accountNumber=" + accountNumber + ", balance=" + balance + ", accountHolder="
+				+ accountHolder.getFullName() + "]";
+	}
+
+	
 
 
 

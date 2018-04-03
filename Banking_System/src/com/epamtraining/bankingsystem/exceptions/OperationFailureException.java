@@ -10,7 +10,7 @@ public class OperationFailureException extends Exception {
 	
 	
 	public OperationFailureException(String message) {
-		super("Operation failed due to : "+message);
+		super("Operation failed : "+message);
 	}
 
 	public OperationFailureException(Throwable throwable) {
